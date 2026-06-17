@@ -1,0 +1,75 @@
+name: Register New Hardware Asset
+description: Add a new piece of data center hardware to the inventory.
+title: "[Asset]: <Brand> <Model>"
+labels: ["inventory-update"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out the details below to register a new hardware asset in the data center.
+
+  - type: dropdown
+    id: hardware-type
+    attributes:
+      label: Hardware Type
+      description: Select the category of this hardware.
+      options:
+        - Server
+        - Network Switch
+        - Router
+        - Storage Array
+        - PDU / Power
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: brand
+    attributes:
+      label: Brand
+      description: e.g., Dell, Cisco, HP
+      placeholder: "e.g., Dell"
+    validations:
+      required: true
+
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      description: The specific model number or name.
+      placeholder: "e.g., PowerEdge R740"
+    validations:
+      required: true
+
+  - type: input
+    id: serial-number
+    attributes:
+      label: Serial Number / Service Tag
+      description: The unique manufacturer serial number.
+    validations:
+      required: true
+
+  - type: input
+    id: reference-number
+    attributes:
+      label: Internal Reference Number
+      description: Your company's internal asset tag or barcode number.
+    validations:
+      required: false
+
+  - type: input
+    id: country
+    attributes:
+      label: Country Manufacturer
+      description: Country of origin/manufacturing.
+      placeholder: "e.g., Malaysia, USA, China"
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description & Specs
+      description: Include any relevant hardware specs (RAM, CPU, port count) or notes.
+    validations:
+      required: false
