@@ -1,0 +1,64 @@
+name: "Enforce Critical Field Security"
+
+on:
+  project_item:
+    types: [edited]
+
+permissions:
+  issues: write
+  repository-projects: write
+
+jobs:
+  validate_change:
+    runs-on: ubuntu-latest
+    # Trigger only if the IP Address field is edited
+    if: github.event.changes.field_value.field_name == 'IP Address'
+
+    steps:
+      - name: "Check Authorization and Revert if Unauthorized"
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const actor = context.actor;
+            // Define your authorized IT Administrators or Infra Team usernames here
+            const authorizedUsers = ["admin-user1", "infra-lead-bot"]; 
+            
+            if (!authorizedUsers.includes(actor)) {
+              const itemId = context.payload.project_item.node_id;
+              const fieldId = context.payload.changes.field_value.field_node_id;
+              const previousValue = context.payload.changes.field_value.from;
+              const issueNumber = context.payload.project_item.content.number;
+
+              core.warning(`Unauthorized attempt by ${actor} to modify IP Address.`);
+
+              // GraphQL Mutation to revert the field value back to the 'from' value
+              const revertMutation = `
+                mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $value: String!) {
+                  updateProjectV2ItemFieldValue(input: {
+                    projectId: $projectId,
+                    itemId: $itemId,
+                    fieldId: $fieldId,
+                    value: { string: $value }
+                  }) {
+                    projectV2Item { id }
+                  }
+                }
+              `;
+              
+              const variables = {
+                projectId: context.payload.project_item.project_node_id,
+                itemId: itemId,
+                fieldId: fieldId,
+                value: previousValue || ""
+              };
+
+              await github.graphql(revertMutation, variables);
+
+              // Leave a tamper-proof audit warning comment on the repository issue
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `⚠️ **Security Alert:** Unauthorized user \`@${actor}\` attempted to modify the critical **IP Address** field. The value has been automatically reverted to \`${previousValue}\`.`
+              });
+            }
