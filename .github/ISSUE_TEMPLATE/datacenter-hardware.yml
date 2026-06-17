@@ -1,1 +1,43 @@
-#
+name: "Data Center Asset"
+description: "Register or update physical hardware in the data center"
+title: "[ASSET-TAG] - Brand Model (e.g., [HW-10492] - Dell R760)"
+labels: ["type: hardware", "loc: pending"]
+body:
+  - type: input
+    id: asset_tag
+    attributes:
+      label: "Asset Tag ID"
+      placeholder: "e.g., HW-10492"
+    validations:
+      required: true
+  - type: dropdown
+    id: location
+    attributes:
+      label: "Data Center / Room"
+      options:
+        - "DC-01 (Ashburn)"
+        - "DC-02 (Dublin)"
+        - "DC-03 (Singapore)"
+    validations:
+      required: true
+  - type: input
+    id: position
+    attributes:
+      label: "Cabinet & RU Position"
+      placeholder: "e.g., Rack A-04, RU-21 to RU-22"
+    validations:
+      required: true
+  - type: input
+    id: serial_number
+    attributes:
+      label: "Service Tag / Serial Number"
+  - type: textarea
+    id: specs
+    attributes:
+      label: "Hardware Specifications"
+      placeholder: "CPU, RAM, Storage, NIC details, Mac Addresses"
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: "Power & Network Port Map"
+      placeholder: "PDU-A Outlet 4, Switch-B Port 12"
