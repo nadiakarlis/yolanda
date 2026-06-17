@@ -1,0 +1,3 @@
+asset_tag,vendor,model,location,rack_position,ip_address,ram_gb
+HW-20391,Dell,PowerEdge R760,DC-01,Rack A-02 RU-12,10.0.4.12,128
+HW-20392,HPE,ProLiant DL380,DC-02,Rack B-05 RU-20,10.1.8.44,256
