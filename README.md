@@ -10,4 +10,4 @@ This repository tracks physical hardware assets for **Dell** and **HPE** fleets 
 
 ## 🔒 Security Restrictions
 * Only users explicitly defined in the administrative policy can modify the **IP Address** custom field.
-* Unauthorized alterations will automatically be rolled back via an active GitHub Actions workflow and logged for auditing.
+* Unauthorized alterations will automatically be rolled back via an active GitHub Actions workflow and logged for auditing
